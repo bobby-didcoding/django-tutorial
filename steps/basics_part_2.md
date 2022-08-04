@@ -5,6 +5,13 @@ This is my Django course. I hope you like it.
 ***
 ***
 
+## Prepare your local project
+You will need to clone down a new module to follow along.
+```
+git checkout basics_part_2
+git pull origin basics_part_2
+```
+
 
 ## Steps/Commands
 >Note: Please 'cd' into the root directory and fire up your virtual environment!
@@ -61,7 +68,13 @@ django_course\
 
 ```
 <!DOCTYPE html>
-<h1>Welcome to our Django course</h1>
+<html lang="en">
+<head>
+</head>
+<body>
+    <h1>Welcome to our Django course</h1>
+</body>
+</html>
 ```
 
 6) Wire up the url - Create a new url.py file to handle url's for the core application.
@@ -143,6 +156,7 @@ django_course\  <--This is the root directory
         >wsgi.py
     steps\
         >basics.md
+        >basics_part_2.md
     venv\
         include\
         Lib\
