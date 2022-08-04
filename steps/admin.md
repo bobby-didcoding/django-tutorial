@@ -89,7 +89,7 @@ user = User.objects.get(first_name = 'Bobby')
 user = User.objects.get(first_name = 'Bobby', last_name="Stearman")
 
 ```
-
+***
 ***
 
 ## Root directory
