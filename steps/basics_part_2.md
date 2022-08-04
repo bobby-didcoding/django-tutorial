@@ -12,7 +12,6 @@ git checkout basics_part_2
 git pull origin basics_part_2
 ```
 
-
 ## Steps/Commands
 >Note: Please 'cd' into the root directory and fire up your virtual environment!
 
