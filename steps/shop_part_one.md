@@ -17,17 +17,17 @@ git pull origin shop_part_1
 
 >Note: Please 'cd' into the root directory and fire up your virtual environment!
 
-**Warning** we are about to swithc things up a little. This is probably intermediate level but I'll go nice and slowly!!
+**Warning** we are about to switch things up a little. This is probably intermediate level but I'll go nice and slowly!!
 
-When putting this course together I was scrathcing my head to figure out what type of website I could use for demo purposes. The concensus I got when asking around was ecommerce! So thats what we're going to do.
+When putting this course together I was scratching my head to figure out what type of website I could use for demo purposes. The consensus I got when asking around was e-commerce! So thats what we're going to do.
 
-It's always good practise to group similar logic into its own application. We have a core app that handles basic webpage logic. We have a users app to handle user specific data. We now need to create an app to handle everything todo with selling products.
+It's always good practice to group similar logic into its own application. We have a core app that handles basic webpage logic. We have a users app to handle user specific data. We now need to create an app to handle everything todo with selling products.
 
 > Note: We will be using [Stripe](https://stripe.com/) to handle payments. However, the code we work through can easily be adapted for other payment processing platforms i.e. Braintree. Please go ahead and create a Stripe account as you'll need it to follow along with this tutorial.
 
 Lets get started.
 
-1) New application - If we are grouping e-commerce functionality, I think we should call our app ecommerce. Run the following code to start a new app.
+1) New application - If we are grouping e-commerce functionality, I think we should call our app 'ecommerce'. Run the following code to start a new app.
 ```
 django-admin startapp ecommerce
 ```
@@ -51,8 +51,8 @@ INSTALLED_APPS = [
 
 Whilst you are in settings.py, add the following variables.
 ```
-STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET")
-STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
+STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY")
 ```
 
 Now add the following to your .env file.
@@ -441,7 +441,7 @@ class CartItem(
     
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     item = models.ForeignKey(Item, null=True, blank=True, on_delete=models.CASCADE)
-    quantity = models.FloatField(default=0.0)
+    quantity = models.IntegerField(default=0)
 
     def amount(self):
         amount = self.item.amount() * self.quantity
@@ -527,7 +527,7 @@ class Line(
     item = models.ForeignKey(Item, on_delete=models.SET_NULL, blank=True, null=True)
     amount = MoneyField(max_digits=14, decimal_places=2, default_currency='GBP', null=True, blank=True)
     stripe_id = models.CharField(max_length=100)
-    quantity = models.FloatField(default=1.0, blank=True,null=True)
+    quantity = models.IntegerField(default=1, blank=True,null=True)
 
 
 class Invoice(
@@ -606,6 +606,18 @@ python manage.py migrate
 ```
 django_course\  <--This is the root directory
     core\
+        __pycache__\
+        migrations\
+            __pycache__\
+            >__init__.py
+        >__init__.py
+        >admin.py
+        >apps.py
+        >models.py
+        >tests.py
+        >urls.py
+        >views.py
+    ecommerce\
         __pycache__\
         migrations\
             __pycache__\

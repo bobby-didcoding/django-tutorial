@@ -63,7 +63,7 @@ class CartItem(
     
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     item = models.ForeignKey(Item, null=True, blank=True, on_delete=models.CASCADE)
-    quantity = models.FloatField(default=0.0)
+    quantity = models.IntegerField(default=0)
 
     def amount(self):
         amount = self.item.amount() * self.quantity
@@ -149,7 +149,7 @@ class Line(
     item = models.ForeignKey(Item, on_delete=models.SET_NULL, blank=True, null=True)
     amount = MoneyField(max_digits=14, decimal_places=2, default_currency='GBP', null=True, blank=True)
     stripe_id = models.CharField(max_length=100)
-    quantity = models.FloatField(default=1.0, blank=True,null=True)
+    quantity = models.IntegerField(default=1, blank=True,null=True)
 
 
 class Invoice(
