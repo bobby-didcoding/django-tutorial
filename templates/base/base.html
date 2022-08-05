@@ -22,9 +22,8 @@
     {% if request.user.is_authenticated %}
     <ul class="sidenav">
         <li>---------Main menu---------</li>
-        <li>
-            <a class="active" href="{% url 'users:account' %}">User Account ({{request.user.username}})</a>
-        </li>
+        <li><a {% if 'account' in request.path %}class="active"{% endif %} href="{% url 'users:account' %}">User Account ({{request.user.username}})</a></li>
+        <li><a {% if 'info' in request.path %}class="active"{% endif %}  href="{% url 'users:user-info' %}">User Info</a></li>
         <li><a href="{% url 'users:sign-out' %}">Sign Out</a></li>
     </ul>
     {% else %}

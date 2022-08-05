@@ -33,6 +33,23 @@ class Item(
         amount = int(self.variable_price.amount * 100)
         return amount
 
+class CartItemManager(models.Manager):
+    """
+    A Manager for Cart item objects
+    """
+    def get_query_set(self):
+        return self.get_queryset()
+
+    def clear_items(self, user):
+
+        qs = self.get_query_set().filter(
+            user = user
+        )
+
+        for q in qs:
+            q.delete()
+
+
 
 class CartItem(
     TimeStampedModel,
@@ -51,6 +68,8 @@ class CartItem(
     def amount(self):
         amount = self.item.amount() * self.quantity
         return amount
+
+    objects = CartItemManager()
 
 
 class Cart(
@@ -165,10 +184,30 @@ class Invoice(
         wallet = Wallet.objects.for_source(self.source)
         return wallet
 
+class WalletManager(models.Manager):
+    """
+    A Manager for Wallet objects
+    """
+    def get_query_set(self):
+        return self.get_queryset()
 
+    def for_source(self, source):
+        """
+        Returns a Wallet objects queryset for a given source model.
+        Usage:
+            Source = Source.objects.first()
+            Wallet.objects.for_source(Source)
+        """
+        qs = self.get_query_set().filter(
+            sources=source
+        )
+
+        return qs
 
 class Wallet(TimeStampedModel, ActivatorModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     stripe_id = models.CharField(max_length=100, blank=True, null=True)
     invoices = models.ManyToManyField(Invoice, blank=True)
     sources = models.ManyToManyField(Source, blank=True)
+
+    objects = WalletManager()

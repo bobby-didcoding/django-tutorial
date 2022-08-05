@@ -4,7 +4,7 @@ from django.contrib.auth import logout, login
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from .forms import UserForm, AuthForm, UserProfileForm
+from .forms import UserForm, AuthForm, UserProfileForm, UserAlterationForm
 from .models import UserProfile
 
 class SignUpView(generic.FormView):
@@ -57,5 +57,22 @@ def AccountView(request):
             return redirect('/account/')
     else:
         return render(request, 'users/account.html', context)
+
+@login_required
+def UserInfoView(request):
+    '''
+    Basic view for user info
+    '''
+    user = request.user
+    u_form = UserAlterationForm(instance = user)
+    context = {'form': u_form}
+
+    if request.method == "POST":
+        form = UserProfileForm(instance = user, data = request.POST)
+        if form.is_valid:
+            form.save()
+            return redirect('/user-info/')
+    else:
+        return render(request, 'users/info.html', context)
 
 

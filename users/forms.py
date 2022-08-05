@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import UserProfile
+from .models import UserProfile, COUNTRIES
 
 class UserForm(UserCreationForm):
 	'''
@@ -41,8 +41,20 @@ class UserProfileForm(forms.ModelForm):
 	county = forms.CharField(max_length=100, required=False, widget=forms.TextInput())
 	post_code = forms.CharField(max_length=8, required=False, widget=forms.TextInput())
 	country = forms.CharField(max_length=100, required=False, widget=forms.TextInput())
+	country = forms.CharField(max_length=100, required=False, widget=forms.Select(choices=COUNTRIES))
 	
 	class Meta:
 		model = UserProfile
 		fields = ( 'avatar', 'telephone', 'address', 'town', 'county', 'post_code', 'country')
 
+
+class UserAlterationForm(forms.ModelForm):
+	'''
+	Basic model-form for our user
+	'''
+	first_name = forms.CharField(max_length=150, required=True, widget=forms.TextInput())
+	last_name = forms.CharField(max_length=150, required=True, widget=forms.TextInput())
+	email = forms.EmailField(max_length=254, required=True, widget=forms.EmailInput())
+	class Meta:
+		model = User
+		fields = ('first_name', 'last_name', 'email')

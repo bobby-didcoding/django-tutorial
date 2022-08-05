@@ -1,8 +1,9 @@
 from datetime import datetime
 from dateutil.relativedelta import *
-import json
 from django.conf import settings
-from .models import Wallet, Source, Invoice, Line, CartItem
+from .models import Wallet, Source, Invoice, Line, CartItem, Cart
+from django.contrib.contenttypes.models import ContentType
+import pycountry
 import stripe
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -14,15 +15,11 @@ class StripeManager:
     def __init__(self, user, *args, **kwargs):
         self.user = user
         self.up = self.user.userprofile
-        self.cart = self.user.cart
-        self.amount = self.cart.amount()
         self.token = kwargs.get("token")
         self.source_id = kwargs.get("source_id")
-        self.price_id = kwargs.get("price_id")
         self.invoice_id = kwargs.get("invoice_id")
         self.invoice_item_id = kwargs.get("invoice_item_id")
-        self.tax_id = settings.STRIPE_TAX
-        self.currency = self.user.wallet.currency
+        self.currency = 'GBP' 
         self.description = 'Django demo'
         
 
@@ -31,6 +28,10 @@ class StripeManager:
         if not wallet.stripe_id:
             self.post_profile()			
         return wallet.stripe_id
+
+    def cart_object(self):
+        cart, created = Cart.objects.get_or_create(user = self.user)
+        return cart
 
     def wallet_object(self):
         wallet, created = Wallet.objects.get_or_create(user = self.user)
@@ -70,23 +71,21 @@ class StripeManager:
         wallet.save()
         return invoice
 
-
-    ## We don't have these fields in the model just yet
-    # def create_stripe_address(self):
-    # 	address={
-    # 		"line1":self.up.address,
-    # 		"city":self.up.town,
-    # 		"state":self.up.county,
-    # 		"postal_code": self.up.post_code,
-    # 		"country": self.up.country_alpha_2
-    # 		}
-    # 	return address
+    def create_stripe_address(self):
+        address={
+            "line1":self.up.address,
+            "city":self.up.town,
+            "state":self.up.county,
+            "postal_code": self.up.post_code,
+            "country": self.up.country_alpha_2
+            }
+        return address
 
     def post_profile(self):
         stripe_customer = stripe.Customer.create(
             email = self.user.email, 
-            # name = self.up.full_name(),
-            # address = self.create_stripe_address()
+            name = self.up.full_name(),
+            address = self.create_stripe_address()
             )
         wallet = self.wallet_object()
         wallet.stripe_id = stripe_customer["id"]
@@ -98,7 +97,7 @@ class StripeManager:
             self.stripe_id(),
             email = self.up.email(), 
             name = self.up.full_name(),
-            # address = self.create_stripe_address()
+            address = self.create_stripe_address()
             )
         return stripe_customer
 
@@ -260,7 +259,7 @@ class StripeManager:
 
     def post_invoice(self):
 
-        cart = self.cart
+        cart = self.cart_object()
         amount = cart.amount
 
         if self.token:
@@ -275,8 +274,6 @@ class StripeManager:
         #created invoice items will automatically be added to this invoice
         new_invoice = stripe.Invoice.create(
             customer=self.stripe_id(),
-            #Worry about this later
-            #default_tax_rates=[self.tax_id],
             collection_method="charge_automatically",
         )
 
@@ -331,97 +328,8 @@ class StripeManager:
         #clear carts
         CartItem.objects.clear_items(self.user)
         
-        #send data to API
-        self.send_to_api(invoice)
-
         message = "Success! Your payment was successful"
         status = "200"
         return {"status": status, "message": message, "id":invoice.id}
 
-    def send_to_api(self, invoice):
-        headers = {
-            'Content-Type': 'application/vnd.api+json',
-        }
-        url = f'{settings.API_URL}/assets/'
-        for line in invoice.lines.all():
-            data = create_api_json(
-                str(line.id),
-                "6dd2b6d8-0c26-11ed-861d-0242ac120002",
-                float(line.sell_amount.amount),
-                line.sell_amount_currency,
-                line.quantity,
-                str(line.user.id),
-                float(line.buy_amount.amount),
-                line.buy_amount_currency,
-                'http://localhost:7070/media/seller%40didcoding.com/products/tokens/Token%20to%20sell/hbar.png',
-                'http://localhost:7070/media/seller%40didcoding.com/products/tokens/Token%20to%20sell/hbar.png',
-                "6dd2b6d8-0c26-11ed-861d-0242ac120002")
-
-            api = APIRequestor(
-                url = url,
-                headers = headers,
-                data = json.dumps(data, indent = 4),
-            )
-            #post data
-            resp = api.post()
-            line.asset_id = resp.json()["data"]["id"]
-            line.save()
-
-
-    def print_webhook_event(obj, action):
-    try:
-        if len(obj)>0:
-            obj = obj[0]
-    except TypeError:
-        pass
-    obj_content_type = ContentType.objects.get_for_model(obj)
-    print_text = f"⚠️ Webhook event ⚠️ - obj:{obj_content_type.app_label}.{obj_content_type.model}, action:{action}"
-    return print_text
-
-    def convert_naive_to_aware(date):
-    return date
-
-
-    class CustomerHandler:
-    def __init__(self, data, method):
-        self.method = method
-        self.data = data
-        self.stripe_id = self.data["id"]
-
-    def get(self):
-        try:
-            wallet = Wallet.objects.get(stripe_id=self.stripe_id)
-        except Wallet.DoesNotExist:
-            print('Wallet not found')
-            wallet = None
-        return wallet
-
-    def deleted(self):
-        obj = self.get()
-        if obj:
-            obj.stripe_id = ""
-            obj.save()
-            print(print_webhook_event(obj, 'deleted'))
-
-    def updated(self):
-        wallet = self.get()
-        if wallet:
-            obj = wallet.user.userprofile
-            
-            #change country alpha_2 to name
-            # country =  self.data["address"]["country"]
-            # country_name = pycountry.countries.get(alpha_2 = country).name
-            ## We need to add this to userprofiles
-            # obj.country = country_name
-            # obj.address = self.data["address"]["line1"]
-            # obj.town = self.data["address"]["city"]
-            # obj.county = self.data["address"]["state"]
-            # obj.post_code = self.data["address"]["postal_code"]
-            obj.save()
-            print(print_webhook_event(obj, 'updated'))
-
-    def created(self):
-        obj = self.get()
-        #Do we really want to create customers in Stripe??
-        print(print_webhook_event(obj, 'created'))
 
