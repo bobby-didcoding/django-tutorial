@@ -151,3 +151,7 @@ if DEBUG:
     ]
 
     INTERNAL_IPS = ['127.0.0.1']
+
+LOGIN_URL = "users:sign-in"
+LOGIN_REDIRECT_URL = "core:home"
+LOGOUT_REDIRECT_URL = "core:home"

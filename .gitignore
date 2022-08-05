@@ -1,5 +1,7 @@
 staticfiles/
 mediafiles/
+backend/staticfiles/
+backend/mediafiles/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
