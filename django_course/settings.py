@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'ecommerce',
     'users', # This is our new app
     'django_extensions', # This is the new extensions library
 ]  
