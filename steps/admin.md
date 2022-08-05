@@ -1,7 +1,7 @@
 # Django course
 This is my Django course. I hope you like it.
 
-> These notes follow on from steps/basics_part_2.md
+> These notes follow on from steps/debug.md
 ***
 ***
 

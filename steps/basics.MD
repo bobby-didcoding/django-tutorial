@@ -8,6 +8,9 @@ This is my Django course. I hope you like it.
 
 ## Steps/Commands
 >Note: The first 'cd' command will assume your terminal is already in the root directory. In my case that would be C:\Users\Bobby\Development\django_course
+
+In this module we will be start our project. To do this we will need to create a virtual environment.
+
 1) Open a terminal and use the following command to create a virtual environment
 ```
 python -m venv venv

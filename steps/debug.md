@@ -50,11 +50,21 @@ if DEBUG:
 
 3) Static files - We will need change the static file settings. Add the following to the django_course/settings.py file
 ```
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'media')
+]
+
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "mediafiles"
+```
+
+Also, add the following import at the top of settings.py
+```
+import os
 ```
 
 4) Wire up the url's - Django debug toolbar needs to be added to the django_course/urls.py file.
