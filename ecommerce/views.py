@@ -1,5 +1,4 @@
 
-from dateutil.relativedelta import *
 from django.views import generic
 from django.conf import settings
 from django.utils.decorators import method_decorator
@@ -110,7 +109,7 @@ def add_or_remove_item(request):
     item_stock=stock
     data = {
             "result": "Success",
-            "message": f'{item.content_object.title} has been {action}d to your cart',
+            "message": f'{item.title} has been {action}d to your cart',
             "redirect": False,
             "data": {
                 "status": action,

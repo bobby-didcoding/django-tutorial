@@ -20,8 +20,10 @@ class Item(
         verbose_name = 'Item'
         verbose_name_plural = 'Items'
         ordering = ["id"]
+    
+    image = models.ImageField(default='default_item_image.jpg', upload_to='items', null=True, blank=True)
 
-    stock = models.IntegerField(default=1.0)
+    stock = models.IntegerField(default=1)
     variable_price = MoneyField(
         max_digits=14, 
         decimal_places=2, 
@@ -32,6 +34,10 @@ class Item(
     def amount(self):
         amount = int(self.variable_price.amount * 100)
         return amount
+
+    def get_absolute_url(self):
+        return f'/item/{self.slug}/'
+    
 
 class CartItemManager(models.Manager):
     """

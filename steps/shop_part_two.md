@@ -32,8 +32,6 @@ Lets get started.
 
 ```
 
-
-from dateutil.relativedelta import *
 from django.views import generic
 from django.conf import settings
 from django.utils.decorators import method_decorator
@@ -286,7 +284,6 @@ if settings.DEBUG:
 
 ```
 from datetime import datetime
-from dateutil.relativedelta import *
 from django.conf import settings
 from .models import Wallet, Source, Invoice, Line, CartItem, Cart
 from django.contrib.contenttypes.models import ContentType

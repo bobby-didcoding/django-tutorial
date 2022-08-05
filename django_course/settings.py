@@ -36,6 +36,9 @@ INSTALLED_APPS = [
     'ecommerce',
     'users', # This is our new app
     'django_extensions', # This is the new extensions library
+    'djmoney',
+    'fontawesomefree',
+    'mathfilters',
 ]  
 
 MIDDLEWARE = [

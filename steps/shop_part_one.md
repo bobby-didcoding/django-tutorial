@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'users', 
     'django_extensions',
     'djmoney',
+    'fontawesomefree',
+    'mathfilters',
 ]  
 ```
 
@@ -64,7 +66,7 @@ export STRIPE_SECRET_KEY=sk_test_xxx
 
 2) Libraries - There are some great libraries that can help with an e-commerce application. django-money is one of them. Let's get it installed.
 ```
-pip install django-money pycountry requests stripe
+pip install django-money pycountry requests stripe fontawesomefree django-mathfilters
 pip freeze > requirements.txt
 ```
 
@@ -333,6 +335,10 @@ Now open /templates/base/base.html and replace the code with the following.
 
     <!--Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!--Fontawesome-->
+    <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script> 
+    <script src="https://kit.fontawesome.com/8b7dd2a781.js" crossorigin="anonymous"></script>
     
     <!--Our own css-->
     <link rel="stylesheet" href="{% static 'main.css' %}">
@@ -398,8 +404,10 @@ class Item(
         verbose_name = 'Item'
         verbose_name_plural = 'Items'
         ordering = ["id"]
+    
+    image = models.ImageField(default='default_item_image.jpg', upload_to='items', null=True, blank=True)
 
-    stock = models.IntegerField(default=1.0)
+    stock = models.IntegerField(default=1)
     variable_price = MoneyField(
         max_digits=14, 
         decimal_places=2, 
@@ -410,6 +418,10 @@ class Item(
     def amount(self):
         amount = int(self.variable_price.amount * 100)
         return amount
+
+    def get_absolute_url(self):
+        return f'item/{self.slug}/'
+    
 
 class CartItemManager(models.Manager):
     """
@@ -590,6 +602,7 @@ class Wallet(TimeStampedModel, ActivatorModel):
 
     objects = WalletManager()
 
+
 ```
 
 Now commit these changes to the database with the following commands.
@@ -598,6 +611,41 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
+4) Admin - As always, we will need to register the new models to admin. This will enable us to CRUD ecommerce models. Open /ecommerce/admin.py and add the following code.
+
+```
+from django.contrib import admin
+from .models import Wallet, Cart, Item, CartItem, Source, Line, Invoice
+
+
+@admin.register(Item)
+class ItemAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title')
+
+@admin.register(CartItem)
+class CartItemAdmin(admin.ModelAdmin):
+    list_display = ('id', 'item')
+
+@admin.register(Wallet)
+class WalletAdmin(admin.ModelAdmin):
+    list_display = ('id','user')
+
+@admin.register(Cart)
+class CartAdmin(admin.ModelAdmin):
+    list_display = ('id','user' )
+
+@admin.register(Source)
+class SourceAdmin(admin.ModelAdmin):
+    list_display = ('id',)
+
+@admin.register(Line)
+class LineAdmin(admin.ModelAdmin):
+    list_display = ('id','created')
+
+@admin.register(Invoice)
+class InvoiceAdmin(admin.ModelAdmin):
+    list_display = ('id',)
+```
 ***
 ***
 
