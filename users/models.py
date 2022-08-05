@@ -26,6 +26,8 @@ class UserProfile(TimeStampedModel,ActivatorModel,models.Model):
     country = models.CharField(verbose_name="Country",max_length=100, null=True, blank=True)
     longitude = models.CharField(verbose_name="Longitude",max_length=50, null=True, blank=True)
     latitude = models.CharField(verbose_name="Latitude",max_length=50, null=True, blank=True)
+
+    avatar = models.ImageField(default='default_avatar.jpg', upload_to='avatar', null=True, blank=True)
 	
     def __str__(self):
         if self.user.first_name and self.user.last_name:

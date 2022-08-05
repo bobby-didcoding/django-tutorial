@@ -1,10 +1,11 @@
 from django.views import generic
-from django.shortcuts import redirect, reverse
+from django.shortcuts import redirect, reverse, render
 from django.contrib.auth import logout, login
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from .forms import UserForm, AuthForm
+from .forms import UserForm, AuthForm, UserProfileForm
+from .models import UserProfile
 
 class SignUpView(generic.FormView):
     '''
@@ -40,14 +41,21 @@ def sign_out(request):
 	return redirect(reverse('users:sign-in'))
 
 
-class AccountView(generic.TemplateView):
+@login_required
+def AccountView(request):
     '''
     Basic view for user accounts
     '''
-    template_name = "users/account.html"
+    up = request.user.userprofile
+    up_form = UserProfileForm(instance = up)
+    context = {'form': up_form}
 
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    if request.method == "POST":
+        form = UserProfileForm(instance = up, data = request.POST, files = request.FILES)
+        if form.is_valid:
+            form.save()
+            return redirect('/account/')
+    else:
+        return render(request, 'users/account.html', context)
 
 
