@@ -31,8 +31,11 @@
         <li><a {% if 'account' in request.path %}class="active"{% endif %} href="{% url 'users:account' %}">User Account ({{request.user.username}})</a></li>
         <li><a {% if 'info' in request.path %}class="active"{% endif %}  href="{% url 'users:user-info' %}">User Info</a></li>
         <li><a href="{% url 'users:sign-out' %}">Sign Out</a></li>
+        {% if 'ecommerce' in installed_apps %}
         <li><a {% if 'item' in request.path %}class="active"{% endif %}  href="{% url 'ecommerce:items' %}">Shop Items</a></li>
         <li><a {% if 'cart' in request.path %}class="active"{% endif %}  href="{% url 'ecommerce:cart' %}">Cart</a></li>
+        <li><a {% if 'order' in request.path %}class="active"{% endif %}  href="{% url 'ecommerce:orders' %}">Orders</a></li>
+        {% endif %}
     </ul>
     {% else %}
     <ul class="sidenav">

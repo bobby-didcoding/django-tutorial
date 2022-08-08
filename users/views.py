@@ -8,9 +8,13 @@ from .forms import UserForm, AuthForm, UserProfileForm, UserAlterationForm
 from .models import UserProfile
 
 class SignUpView(generic.FormView):
-    '''
-    Basic view for user sign up
-    '''
+    """
+    Basic user sign up page.
+
+    **Template:**
+
+    :template:`users/sign_up.html`
+    """
     template_name = "users/sign_up.html"
     form_class = UserForm
     success_url = '/account/'
@@ -21,9 +25,13 @@ class SignUpView(generic.FormView):
         return HttpResponseRedirect(self.get_success_url())
 
 class SignInView(generic.FormView):
-    '''
-    Basic view for user sign in
-    '''
+    """
+    Basic user sign up page.
+
+    **Template:**
+
+    :template:`users/sign_in.html`
+    """
     template_name = "users/sign_in.html"
     form_class = AuthForm
     success_url = '/account/'
@@ -34,18 +42,22 @@ class SignInView(generic.FormView):
 
 
 def sign_out(request):
-	'''
-	Basic view for user sign out
-	'''
+	"""
+    Basic user sign out page.
+    """
 	logout(request)
 	return redirect(reverse('users:sign-in'))
 
 
 @login_required
 def AccountView(request):
-    '''
-    Basic view for user accounts
-    '''
+    """
+    User account page. CRUD account details.
+
+    **Template:**
+
+    :template:`users/account.html`
+    """
     up = request.user.userprofile
     up_form = UserProfileForm(instance = up)
     context = {'form': up_form}
@@ -60,9 +72,13 @@ def AccountView(request):
 
 @login_required
 def UserInfoView(request):
-    '''
-    Basic view for user info
-    '''
+    """
+    User information page. CRUD profile details.
+
+    **Template:**
+
+    :template:`users/info.html`
+    """
     user = request.user
     u_form = UserAlterationForm(instance = user)
     context = {'form': u_form}

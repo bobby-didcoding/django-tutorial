@@ -1,14 +1,17 @@
 from django import template
 from django.template.loader import render_to_string
 from ..models import Item
-from ..utils import StripeManager
+from ..utils import EcommerceManager
 register = template.Library()
 
 
 @register.simple_tag(takes_context=True)
 def item_button(context, target):
+    '''
+    Handles the logic for a button used to add items to a users cart.
+    '''
     user = context['request'].user
-    stripe_manager = StripeManager(user = user)
+    ecommerce_manager = EcommerceManager(user = user)
 
     # do nothing when user isn't authenticated
     if not user.is_authenticated:
@@ -16,7 +19,7 @@ def item_button(context, target):
 
     target_model = '.'.join((target._meta.app_label, target._meta.object_name))
     undo = False
-    cart = stripe_manager.cart_object()
+    cart = ecommerce_manager.cart_object()
     item_field = cart.items
     if cart.item_check(target):
         undo = True
@@ -36,8 +39,11 @@ def item_button(context, target):
 
 @register.simple_tag(takes_context=True)
 def item_button_v2(context, target):
+    '''
+    Handles the logic for a button used to remove items to a users cart.
+    '''
     user = context['request'].user
-    stripe_manager = StripeManager(user = user)
+    ecommerce_manager = EcommerceManager(user = user)
 
     # do nothing when user isn't authenticated
     if not user.is_authenticated:
@@ -49,7 +55,7 @@ def item_button_v2(context, target):
     # prepare button to remove item if
     # already in cart
 
-    cart = stripe_manager.cart_object()
+    cart = ecommerce_manager.cart_object()
     item_field = cart.items
     if cart.item_check(target):
         undo = True

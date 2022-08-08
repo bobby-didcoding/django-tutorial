@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.admindocs',
     'core',
     'ecommerce', # This is our new app
     'users', 
@@ -49,6 +50,41 @@ INSTALLED_APPS = [
     'fontawesomefree',
     'mathfilters',
 ]  
+```
+
+Also, change the TEMPLATES variable to the following.
+
+>Note: we will create a context file in a moment as we will need to access INSTALLED_APPS in our templates.
+
+```
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            'templates',
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'django_course.context.project_context'
+            ],
+        },
+    },
+]
+```
+Now create a file called context.py in /django_course and add the following code.
+
+```
+from django.conf import settings
+
+def project_context(request):
+    return {
+        "installed_apps": settings.INSTALLED_APPS,
+    }
 ```
 
 Whilst you are in settings.py, add the following variables.
@@ -62,11 +98,13 @@ Now add the following to your .env file.
 ```
 export STRIPE_PUBLISHABLE_KEY=pk_test_xxx
 export STRIPE_SECRET_KEY=sk_test_xxx
+
+
 ```
 
 2) Libraries - There are some great libraries that can help with an e-commerce application. django-money is one of them. Let's get it installed.
 ```
-pip install django-money pycountry requests stripe fontawesomefree django-mathfilters
+pip install django-money pycountry requests stripe fontawesomefree django-mathfilters python-dateutil
 pip freeze > requirements.txt
 ```
 
@@ -219,9 +257,13 @@ from .forms import UserForm, AuthForm, UserProfileForm, UserAlterationForm
 from .models import UserProfile
 
 class SignUpView(generic.FormView):
-    '''
-    Basic view for user sign up
-    '''
+    """
+    Basic user sign up page.
+
+    **Template:**
+
+    :template:`users/sign_up.html`
+    """
     template_name = "users/sign_up.html"
     form_class = UserForm
     success_url = '/account/'
@@ -232,9 +274,13 @@ class SignUpView(generic.FormView):
         return HttpResponseRedirect(self.get_success_url())
 
 class SignInView(generic.FormView):
-    '''
-    Basic view for user sign in
-    '''
+    """
+    Basic user sign up page.
+
+    **Template:**
+
+    :template:`users/sign_in.html`
+    """
     template_name = "users/sign_in.html"
     form_class = AuthForm
     success_url = '/account/'
@@ -245,18 +291,22 @@ class SignInView(generic.FormView):
 
 
 def sign_out(request):
-	'''
-	Basic view for user sign out
-	'''
+	"""
+    Basic user sign out page.
+    """
 	logout(request)
 	return redirect(reverse('users:sign-in'))
 
 
 @login_required
 def AccountView(request):
-    '''
-    Basic view for user accounts
-    '''
+    """
+    User account page. CRUD account details.
+
+    **Template:**
+
+    :template:`users/account.html`
+    """
     up = request.user.userprofile
     up_form = UserProfileForm(instance = up)
     context = {'form': up_form}
@@ -271,9 +321,13 @@ def AccountView(request):
 
 @login_required
 def UserInfoView(request):
-    '''
-    Basic view for user info
-    '''
+    """
+    User information page. CRUD profile details.
+
+    **Template:**
+
+    :template:`users/info.html`
+    """
     user = request.user
     u_form = UserAlterationForm(instance = user)
     context = {'form': u_form}
@@ -285,8 +339,6 @@ def UserInfoView(request):
             return redirect('/user-info/')
     else:
         return render(request, 'users/info.html', context)
-
-
 
 ```
 
@@ -400,6 +452,11 @@ class Item(
     TitleSlugDescriptionModel,
     models.Model):
 
+    """
+    ecommerce.Item
+    Stores a single item entry for our shop
+    """
+
     class Meta:
         verbose_name = 'Item'
         verbose_name_plural = 'Items'
@@ -420,7 +477,7 @@ class Item(
         return amount
 
     def get_absolute_url(self):
-        return f'item/{self.slug}/'
+        return f'/item/{self.slug}/'
     
 
 class CartItemManager(models.Manager):
@@ -445,7 +502,11 @@ class CartItem(
     TimeStampedModel,
     ActivatorModel ,
     models.Model):
-
+    """
+    ecommerce.CartItem
+    Stores a single item entry, related to :model:`ecommerce.Item` and
+    :model:`auth.User`.
+    """
     class Meta:
         verbose_name = 'Item for cart'
         verbose_name_plural = 'Item for cart'
@@ -466,6 +527,10 @@ class Cart(
     TimeStampedModel,
     ActivatorModel ,
     models.Model):
+    """
+    ecommerce.Cart
+    This is a Users Shopping cart, related to :model:`auth.User`.
+    """
 
     class Meta:
         verbose_name = 'User cart'
@@ -500,6 +565,9 @@ class Cart(
         self.save()
 
     def item_check(self, item):
+        '''
+        Checks if an item is in the User cart
+        '''
         cartitems = [i.item  for i in self.items.all()]
         if item in cartitems:
             return True
@@ -519,7 +587,14 @@ class Source(
     TimeStampedModel,
     ActivatorModel ,
     models.Model):
-
+    """
+    ecommerce.Source
+    Stores Stripe ID's for sources (payment methods).
+    """
+    class Meta:
+        verbose_name = 'Source'
+        verbose_name_plural = 'Sources'
+        ordering = ["id"]
     stripe_id = models.CharField(max_length=100)
     is_default = models.BooleanField(default=False)
 
@@ -530,6 +605,11 @@ class Line(
     ActivatorModel ,
     models.Model):
 
+    '''
+    ecommerce.Line
+    Stores a single line entry, related to :model:`ecommerce.Item` and
+    :model:`auth.User`.
+    '''
     class Meta:
         verbose_name = 'Invoice Line'
         verbose_name_plural = 'Invoice Lines'
@@ -546,7 +626,11 @@ class Invoice(
     TimeStampedModel,
     ActivatorModel ,
     models.Model):
-
+    '''
+    ecommerce.Invoice
+    Stores a single invoice entry, related to :model:`ecommerce.Line`,
+    :model:`ecommerce.Source` and :model:`auth.User`.
+    '''
     class Meta:
         verbose_name = 'User Invoice'
         verbose_name_plural = 'User Invoices'
@@ -595,13 +679,21 @@ class WalletManager(models.Manager):
         return qs
 
 class Wallet(TimeStampedModel, ActivatorModel):
+    '''
+    ecommerce.Wallet
+    Stores a single wallet entry related to :model:`ecommerce.Invoice`,
+    :model:`ecommerce.Source` and :model:`auth.User`.
+    '''
+    class Meta:
+        verbose_name = 'User Wallet'
+        verbose_name_plural = 'User Wallets'
+        ordering = ["id"]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     stripe_id = models.CharField(max_length=100, blank=True, null=True)
     invoices = models.ManyToManyField(Invoice, blank=True)
     sources = models.ManyToManyField(Source, blank=True)
 
     objects = WalletManager()
-
 
 ```
 

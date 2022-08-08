@@ -1,15 +1,15 @@
+from dateutil.relativedelta import *
 from datetime import datetime
 from django.conf import settings
 from .models import Wallet, Source, Invoice, Line, CartItem, Cart
-from django.contrib.contenttypes.models import ContentType
-import pycountry
 import stripe
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-class StripeManager:
+class EcommerceManager:
     '''
-    This manager allows us to call a few of Stripe's endpoints. 
+    This manager allows work through app specific logic and also call 
+    API end points for our payment processing company, Stripe. 
     '''
     def __init__(self, user, *args, **kwargs):
         self.user = user
@@ -51,9 +51,8 @@ class StripeManager:
         line.item = item_obj.item
         line.user = self.user
         line.quantity = item_obj.quantity
-        line.sell_amount = item_obj.amount() / 100
-        line.buy_amount = item_obj.amount() / 100
-        line.amount_currency = self.wallet_object().currency
+        line.amount = item_obj.amount() / 100
+        line.amount_currency = self.currency
         line.save()
         return line
 
@@ -154,17 +153,9 @@ class StripeManager:
             unit_amount= unit_amount,
             quantity = int(item.quantity),
             currency=self.currency.lower(),
-            description= item.item.content_object.title
+            description= item.item.title
             )
         line = self.line_object(line["id"], item)
-
-        invoice_item = stripe.InvoiceItem.create(
-                customer= self.stripe_id(),
-                unit_amount= unit_amount,
-                quantity = int(item.quantity),
-                currency=self.currency.lower(),
-                description= self.description
-            )
         return line
 
     def list_invoices(self):

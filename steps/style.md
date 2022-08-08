@@ -518,6 +518,32 @@ span.price {
     margin-bottom: 20px;
   }
 }
+
+.pagination {
+  display: inline-block;
+  position: fixed;     
+     text-align: center;    
+     bottom: 0px; 
+     width: 100%;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #ddd;
+  border-radius: 5px;
+}
 ```
 You will need to run the following command to ensure Django picks up the new file when rendering each page.
 ```

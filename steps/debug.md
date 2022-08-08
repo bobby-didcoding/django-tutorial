@@ -16,9 +16,9 @@ git pull origin debug
 ## Steps/Commands
 >Note: Please 'cd' into the root directory and fire up your virtual environment!
 
-1) Install Debug toolbar - Open a terminal and use the following command to install a fantastic package called django-debug-toolbar
+1) Install Debug toolbar - Open a terminal and use the following command to install a fantastic package called django-debug-toolbar. We'll also install docutils while we are there as we'll need it in the next module (admin)
 ```
-pip install django-debug-toolbar
+pip install django-debug-toolbar docutils
 pip freeze > requirements.txt
 ```
 
@@ -48,6 +48,36 @@ if DEBUG:
     INTERNAL_IPS = ['127.0.0.1']
 ```
 
+Now add replace the INSTALLED_APPS variable with the following.
+```
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.admindocs', 
+    'core',
+]
+```
+Now replace MIDDLEWARE variable with the following.
+
+```
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.admindocs.middleware.XViewMiddleware',
+]
+
+```
+
+
 3) Static files - We will need change the static file settings. Add the following to the django_course/settings.py file
 ```
 STATICFILES_DIRS = [
@@ -76,6 +106,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('admin/doc/', include('django.contrib.admindocs.urls')),
     path('admin/', admin.site.urls),
     path('', include('core.urls', namespace="core")),
     path("__debug__/", include('debug_toolbar.urls')),

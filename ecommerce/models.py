@@ -16,6 +16,11 @@ class Item(
     TitleSlugDescriptionModel,
     models.Model):
 
+    """
+    ecommerce.Item
+    Stores a single item entry for our shop
+    """
+
     class Meta:
         verbose_name = 'Item'
         verbose_name_plural = 'Items'
@@ -61,7 +66,11 @@ class CartItem(
     TimeStampedModel,
     ActivatorModel ,
     models.Model):
-
+    """
+    ecommerce.CartItem
+    Stores a single item entry, related to :model:`ecommerce.Item` and
+    :model:`auth.User`.
+    """
     class Meta:
         verbose_name = 'Item for cart'
         verbose_name_plural = 'Item for cart'
@@ -82,6 +91,10 @@ class Cart(
     TimeStampedModel,
     ActivatorModel ,
     models.Model):
+    """
+    ecommerce.Cart
+    This is a Users Shopping cart, related to :model:`auth.User`.
+    """
 
     class Meta:
         verbose_name = 'User cart'
@@ -116,6 +129,9 @@ class Cart(
         self.save()
 
     def item_check(self, item):
+        '''
+        Checks if an item is in the User cart
+        '''
         cartitems = [i.item  for i in self.items.all()]
         if item in cartitems:
             return True
@@ -135,7 +151,14 @@ class Source(
     TimeStampedModel,
     ActivatorModel ,
     models.Model):
-
+    """
+    ecommerce.Source
+    Stores Stripe ID's for sources (payment methods).
+    """
+    class Meta:
+        verbose_name = 'Source'
+        verbose_name_plural = 'Sources'
+        ordering = ["id"]
     stripe_id = models.CharField(max_length=100)
     is_default = models.BooleanField(default=False)
 
@@ -146,6 +169,11 @@ class Line(
     ActivatorModel ,
     models.Model):
 
+    '''
+    ecommerce.Line
+    Stores a single line entry, related to :model:`ecommerce.Item` and
+    :model:`auth.User`.
+    '''
     class Meta:
         verbose_name = 'Invoice Line'
         verbose_name_plural = 'Invoice Lines'
@@ -162,7 +190,11 @@ class Invoice(
     TimeStampedModel,
     ActivatorModel ,
     models.Model):
-
+    '''
+    ecommerce.Invoice
+    Stores a single invoice entry, related to :model:`ecommerce.Line`,
+    :model:`ecommerce.Source` and :model:`auth.User`.
+    '''
     class Meta:
         verbose_name = 'User Invoice'
         verbose_name_plural = 'User Invoices'
@@ -211,6 +243,15 @@ class WalletManager(models.Manager):
         return qs
 
 class Wallet(TimeStampedModel, ActivatorModel):
+    '''
+    ecommerce.Wallet
+    Stores a single wallet entry related to :model:`ecommerce.Invoice`,
+    :model:`ecommerce.Source` and :model:`auth.User`.
+    '''
+    class Meta:
+        verbose_name = 'User Wallet'
+        verbose_name_plural = 'User Wallets'
+        ordering = ["id"]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     stripe_id = models.CharField(max_length=100, blank=True, null=True)
     invoices = models.ManyToManyField(Invoice, blank=True)
