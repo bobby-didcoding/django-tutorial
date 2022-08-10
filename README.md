@@ -21,13 +21,15 @@ First you will need to clone down the first module.
 
 ```
 #option 1 - SSH
-git clone --branch basics git@github.com:bobby-didcoding/django-tutorial.git
+git clone --module_1 basics git@github.com:bobby-didcoding/django-tutorial.git .
 
 #option 2 - Github CLI
-gh repo clone --branch basics bobby-didcoding/django-tutorial
+gh repo clone bobby-didcoding/django-tutorial
+git checkout -b module_1
+git pull origin module_1
 
 #option 3 - HTTPS
-git clone --branch basics https://github.com/bobby-didcoding/django-tutorial.git
+git clone --branch module_1 https://github.com/bobby-didcoding/django-tutorial.git
 ```
 
 ***

@@ -1,4 +1,4 @@
-# Django course
+# Django course - Module 1
 This is my Django course. I hope you like it.
 
 > These notes follow on from the README.md getting started instructions.
@@ -7,6 +7,8 @@ This is my Django course. I hope you like it.
 
 
 ## Steps/Commands
+You should now have a directory called 'django_course' in your development directory. This will be known as your root directory.
+
 >Note: Please make sure you are in the root directory. In my case that would be C:\Users\Bobby\Development\django_course
 
 In this module we will be start our project. To do this we will need to create a virtual environment.
