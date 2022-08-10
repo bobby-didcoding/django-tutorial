@@ -21,12 +21,12 @@ git pull origin module_1
 ```
 
 ## Steps/Commands
-You should now have a directory called 'django_course' in your development directory. This will be known as your root directory.
+You should now have a directory called 'django_course' in your development directory. This will be known as your 'root directory'.
 
-In this module we will be start our project. To do this we will need to create a virtual environment.
+In this module, we will be start our project. To do this we will need to create a virtual environment.
+>Note: Python virtual env docs can be found [here](https://docs.python.org/3/tutorial/venv.html).
 
 1) Virtual Environment: Open a terminal and use the following command to create a virtual environment. 
->Note: Python virtual env docs can be found [here](https://docs.python.org/3/tutorial/venv.html).
 ```
 python -m venv venv
 ```
