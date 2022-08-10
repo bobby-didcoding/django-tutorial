@@ -32,23 +32,21 @@ git checkout -b module_2
 git pull origin module_2
 ```
 
-## Prepare your local project
-You will need to clone down a new module to follow along.
-```
-git checkout basics_part_2
-git pull origin basics_part_2
-```
-
 ## Steps/Commands
 >Note: Please 'cd' into the root directory and fire up your virtual environment!
 
-1) Start application - Open a terminal and use the following command to start a new application
+"Django makes it easier to build better web apps more quickly and with less code."
+
+In this module, we will be creating a Django application for our project. A Django application is a Python package that is specifically intended for use in a Django project. An application may use common Django conventions, such as having models, tests, urls, and views submodules. 
+
+Our application will be called 'core'. This application will hold the logic for our core/main web pages i.e. home, about us, contact us...
+
+1) Applications - Open a terminal and use the following command to start a new application
 ```
-django-admin startapp core
+python manage.py startapp core
 ```
 
-2) Register application - Open django_course/settings.py and register the new application in INSTALLED_APPS.
-
+The settings.py file is where we save out project settings. Django will only know to include our core app in the project when we register it. Open django_course/settings.py and register the new application in INSTALLED_APPS. Replace the cuurent settings with the following snippet.
 ```
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -61,8 +59,8 @@ INSTALLED_APPS = [
 ]
 ```
 
-3) Write a view - Open django_course/core/views.py and write a view to handle the user request/response logic.
-
+3) Views - A view function, or view for short, is a Python function that takes a web request and returns a web response. This response can be the HTML contents of a web page, or a redirect, or a 404 error, or an XML document, or an image . . . or anything, really. Lets create our first view. Open django_course/core/views.py and write a view to handle the user request/response logic. Use the following snippet.
+>Note: We will be using one of Django's built in views called 'TemplateView'.
 ```
 from django.views import generic
 
@@ -77,8 +75,7 @@ class HomeView(generic.TemplateView):
 	template_name = "core/index.html"
 ```
 
-4) Configure template directory - Django is configured to find HTML files in registered app's. However, to help Django you will need to structure the template directory as follows:
-
+4) Templates - We will need a HTML template to render on a browser. Being a web framework, Django needs a convenient way to generate HTML dynamically. The most common approach relies on templates. A template contains the static parts of the desired HTML output as well as some special syntax describing how dynamic content will be inserted. Django is configured to find HTML files in registered app's. However, to help Django you will need to structure the template directory as follows:
 ```
 django_course\ 
     core\
@@ -97,7 +94,7 @@ django_course\
         >views.py
 ```
 
-5) Create HTMl template - create an index.html file in core/templates/core:
+Create HTMl template - create an index.html file in core/templates/core:
 
 ```
 <!DOCTYPE html>
@@ -110,7 +107,7 @@ django_course\
 </html>
 ```
 
-6) Wire up the url - Create a new url.py file to handle url's for the core application.
+5) URL's - A clean, elegant URL scheme is an important detail in a high-quality web application. Django lets you design URLs however you want, with no framework limitations. To design URLs for an app, you create a Python module informally called a URLconf (URL configuration). This module is pure Python code and is a mapping between URL path expressions to Python functions (your views). Go ahead and create a new url.py file to handle url's for the core application. Use the following snipped of code in the new file.
 
 ```
 from django.urls import path
@@ -123,7 +120,7 @@ urlpatterns = [
 ]
 ```
 
-7) Register the core app url's - Open django_course/urls.py and wire up the core application urls
+Now go ahead and open django_course/urls.py (URLconf)and wire up the core application urls. Replace the code with the following snippet.
 
 ```
 from django.contrib import admin
@@ -136,8 +133,7 @@ urlpatterns = [
 
 ```
 
-8) Start a local server - Use the following command to start a local development server
-
+8) Local server - Django has a built in development server which is a lightweight web server written purely in Python. Django's development server allows us to develop things rapidly, without having to deal with configuring a production server – such as Apache – until you’re ready for production. Use the following command to start a local development server
 ```
 python manage.py runserver
 ```
@@ -188,12 +184,9 @@ django_course\  <--This is the root directory
         >urls.py
         >wsgi.py
     steps\
-        >basics.md
-        >basics_part_2.md
+        ...
     venv\
-        include\
-        Lib\
-        Scripts\
+        ...
     >.gitignore
     >manage.py
     >README.md

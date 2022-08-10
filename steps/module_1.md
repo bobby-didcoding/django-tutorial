@@ -57,6 +57,7 @@ pip freeze > requirements.txt
 ```
 django-admin startproject django_course .
 ```
+
 ***
 ***
 
