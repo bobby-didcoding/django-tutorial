@@ -59,7 +59,7 @@ INSTALLED_APPS = [
 ]
 ```
 
-3) Views - A view function, or view for short, is a Python function that takes a web request and returns a web response. This response can be the HTML contents of a web page, or a redirect, or a 404 error, or an XML document, or an image . . . or anything, really. Lets create our first view. Open django_course/core/views.py and write a view to handle the user request/response logic. Use the following snippet.
+2) Views - A view function, or view for short, is a Python function that takes a web request and returns a web response. This response can be the HTML contents of a web page, or a redirect, or a 404 error, or an XML document, or an image . . . or anything, really. Lets create our first view. Open django_course/core/views.py and write a view to handle the user request/response logic. Use the following snippet.
 >Note: We will be using one of Django's built in views called 'TemplateView'.
 ```
 from django.views import generic
@@ -75,22 +75,22 @@ class HomeView(generic.TemplateView):
 	template_name = "core/index.html"
 ```
 
-4) Templates - We will need a HTML template to render on a browser. Being a web framework, Django needs a convenient way to generate HTML dynamically. The most common approach relies on templates. A template contains the static parts of the desired HTML output as well as some special syntax describing how dynamic content will be inserted. Django is configured to find HTML files in registered app's. However, to help Django you will need to structure the template directory as follows:
+3) Templates - We will need a HTML template to render on a browser. Being a web framework, Django needs a convenient way to generate HTML dynamically. The most common approach relies on templates. A template contains the static parts of the desired HTML output as well as some special syntax describing how dynamic content will be inserted. Django is configured to find HTML files in registered app's. However, to help Django you will need to structure the template directory as follows:
 ```
 django_course\ 
     core\
         migrations\
             >__init__.py
-        >__init__.py
-        >admin.py
-        >apps.py
-        >models.py
-        >tests.py
         templates\
             core\
                 ...
                 template go here
                 ...
+        >__init__.py
+        >admin.py
+        >apps.py
+        >models.py
+        >tests.py
         >views.py
 ```
 
@@ -107,7 +107,7 @@ Create HTMl template - create an index.html file in core/templates/core:
 </html>
 ```
 
-5) URL's - A clean, elegant URL scheme is an important detail in a high-quality web application. Django lets you design URLs however you want, with no framework limitations. To design URLs for an app, you create a Python module informally called a URLconf (URL configuration). This module is pure Python code and is a mapping between URL path expressions to Python functions (your views). Go ahead and create a new url.py file to handle url's for the core application. Use the following snipped of code in the new file.
+4) URL's - A clean, elegant URL scheme is an important detail in a high-quality web application. Django lets you design URLs however you want, with no framework limitations. To design URLs for an app, you create a Python module informally called a URLconf (URL configuration). This module is pure Python code and is a mapping between URL path expressions to Python functions (your views). Go ahead and create a new urls.py file in /core to handle url's for the core application. Use the following snipped of code in the new file.
 
 ```
 from django.urls import path
@@ -130,7 +130,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls', namespace="core")), #our bespoke apps
 ]
-
 ```
 
 8) Local server - Django has a built in development server which is a lightweight web server written purely in Python. Django's development server allows us to develop things rapidly, without having to deal with configuring a production server – such as Apache – until you’re ready for production. Use the following command to start a local development server
@@ -151,6 +150,7 @@ Django version 4.0.6, using settings 'django_course.settings'
 Starting development server at http://127.0.0.1:8000/
 Quit the server with CTRL-BREAK.
 ```
+>Note: Don't worry about the unapplied migration error message in your terminal. We'll deal with that soon enough.
 
 You should now be up and running!
 >Note: Open an incognito browser when testing your project (Ctrl + Shift + N)
@@ -165,19 +165,21 @@ You should now be up and running!
 ```
 django_course\  <--This is the root directory
     core\
+        __pycache__\
         migrations\
             >__init__.py
+        templates\
+            core\
+                >index.html
         >__init__.py
         >admin.py
         >apps.py
         >models.py
         >tests.py
-        templates\
-            core\
-                >index.html
         >urls.py
         >views.py
     django_course\
+        __pycache__\
         >__init__.py
         >asgi.py
         >settings.py
@@ -188,6 +190,7 @@ django_course\  <--This is the root directory
     venv\
         ...
     >.gitignore
+    >db.sqlite3
     >manage.py
     >README.md
     >requirements.txt
