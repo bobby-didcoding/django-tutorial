@@ -24,18 +24,19 @@ First you will need to clone down the first module.
 git clone --module_1 basics git@github.com:bobby-didcoding/django-tutorial.git .
 
 #option 2 - Github CLI
-gh repo clone bobby-didcoding/django-tutorial
-git checkout -b module_1
-git pull origin module_1
+gh repo clone bobby-didcoding/django-tutorial .
+git checkout module_1
 
 #option 3 - HTTPS
-git clone --branch module_1 https://github.com/bobby-didcoding/django-tutorial.git
+git clone --branch module_1 https://github.com/bobby-didcoding/django-tutorial.git .
 ```
 
 ***
 ***
 
 ## Following along
-Each module has a walk through video. You can find the ech video link in the corresponding steps file.
+Each module has a walk through video. You can find the each video link in the corresponding steps file.
+
+Please open /steps/module_1 to begin.
 ***
 ***
