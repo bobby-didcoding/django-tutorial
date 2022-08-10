@@ -26,7 +26,7 @@ You should now have a directory called 'django_course' in your development direc
 In this module, we will be start our project. To do this we will need to create a virtual environment.
 >Note: Python virtual env docs can be found [here](https://docs.python.org/3/tutorial/venv.html).
 
-1) Virtual Environment: Open a terminal and use the following command to create a virtual environment. 
+1) Virtual Environment - Open a terminal and use the following command to create a virtual environment. 
 ```
 python -m venv venv
 ```
@@ -43,7 +43,7 @@ You will that your virtual environment is active when your terminal displays the
 (venv) path\to\project\django_course>
 ```
 
-2) Packages and requirements: Our project will rely on a whole bunch of 3rd party packages (requirements) to function. We will be using a Python package manager to install packages throughout this course. 
+2) Packages and requirements - Our project will rely on a whole bunch of 3rd party packages (requirements) to function. We will be using a Python package manager to install packages throughout this course. 
 The first and most import package is, of course, Django! The following command will install Django into our virtual environment.
 ```
 pip install django
@@ -53,7 +53,7 @@ We need a file to store a list of project requirements. This will help you when 
 pip freeze > requirements.txt
 ```
 
-3) Django: You can now go ahead and start a new Django project. Installing Django has given you access to a handy 'startproject' command. Use the following command to start our new project.
+3) Django - You can now go ahead and start a new Django project. Installing Django has given you access to a handy 'startproject' command. Use the following command to start our new project.
 ```
 django-admin startproject django_course .
 ```
