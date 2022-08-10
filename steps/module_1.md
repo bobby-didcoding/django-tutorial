@@ -5,11 +5,23 @@ This is my Django course. I hope you like it.
 ***
 ***
 
+## Current root directory
+Your root directory should look like the following.
+```
+django_course\  <--This is the root directory
+    steps\
+        ...
+    >.gitignore
+    >README.md
+```
+If in doubt, run the following git commands:
+```
+git checkout -b module_1
+git pull origin module_1
+```
 
 ## Steps/Commands
 You should now have a directory called 'django_course' in your development directory. This will be known as your root directory.
-
->Note: Please make sure you are in the root directory. In my case that would be C:\Users\Bobby\Development\django_course
 
 In this module we will be start our project. To do this we will need to create a virtual environment.
 
@@ -25,7 +37,7 @@ pip freeze > requirements.txt
 ***
 ***
 
-## Root directory
+## New Root directory
 >Note: If all went well, your root directory should now look like this
 ```
 django_course\  <--This is the root directory
