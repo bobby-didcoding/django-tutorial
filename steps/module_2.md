@@ -1,9 +1,36 @@
-# Django course
+# Django course - Module 2
 This is my Django course. I hope you like it.
 
-> These notes follow on from steps/basics.md
+> These notes follow on from steps/module_1.md
 ***
 ***
+
+## Current root directory
+Your root directory should look like the following.
+```
+django_course\  <--This is the root directory
+    django_course\
+        >__init__.py
+        >asgi.py
+        >settings.py
+        >urls.py
+        >wsgi.py
+    steps\
+        ...
+    venv\
+        include\
+        Lib\
+        Scripts\
+    >.gitignore
+    >manage.py
+    >README.md
+    >requirements.txt
+```
+If in doubt, run the following git commands:
+```
+git checkout -b module_2
+git pull origin module_2
+```
 
 ## Prepare your local project
 You will need to clone down a new module to follow along.
