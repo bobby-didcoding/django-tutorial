@@ -53,12 +53,10 @@ We need a file to store a list of project requirements. This will help you when 
 pip freeze > requirements.txt
 ```
 
-5) 
+3) Django: You can now go ahead and start a new Django project. Installing Django has given you access to a handy 'startproject' command. Use the following command to start our new project.
 ```
 django-admin startproject django_course .
-
 ```
-
 ***
 ***
 
