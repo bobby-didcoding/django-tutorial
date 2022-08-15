@@ -505,7 +505,7 @@ django_course\  <--This is the root directory
         >urls.py
         >wsgi.py
     media\
-    mediafilew\ <--New directory
+    mediafiles\ <--New directory
     static\
         >main.css
     staticfiles\

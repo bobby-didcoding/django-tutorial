@@ -9,6 +9,8 @@ This is my Django course. I hope you like it.
 Your root directory should look like the following.
 ```
 django_course\  <--This is the root directory
+    media\
+        ...
     steps\
         ...
     >.gitignore
@@ -71,6 +73,8 @@ django_course\  <--This is the root directory
         >settings.py
         >urls.py
         >wsgi.py
+    media\
+        ...
     steps\
         ...
     venv\

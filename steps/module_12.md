@@ -43,7 +43,7 @@ django_course\  <--This is the root directory
         >utils.py
         >views.py
     media\
-    mediafilew\
+    mediafiles\
     static\
         >main.css
     staticfiles\
@@ -506,7 +506,7 @@ django_course\  <--This is the root directory
         >utils.py
         >views.py
     media\
-    mediafilew\
+    mediafiles\
     static\
         >main.css
     staticfiles\

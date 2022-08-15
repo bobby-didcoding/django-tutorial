@@ -15,6 +15,8 @@ django_course\  <--This is the root directory
         >settings.py
         >urls.py
         >wsgi.py
+    media\
+        ...
     steps\
         ...
     venv\
@@ -185,6 +187,8 @@ django_course\  <--This is the root directory
         >settings.py
         >urls.py
         >wsgi.py
+    media\
+        ...
     steps\
         ...
     venv\

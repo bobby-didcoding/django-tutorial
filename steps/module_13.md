@@ -44,7 +44,7 @@ django_course\  <--This is the root directory
         >urls.py
         >views.py
     media\
-    mediafilew\
+    mediafiles\
     static\
         >main.css
     staticfiles\

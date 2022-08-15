@@ -29,7 +29,7 @@ django_course\  <--This is the root directory
         >urls.py
         >wsgi.py
     media\
-    mediafilew\
+    mediafiles\
     static\
         >main.css
     staticfiles\
@@ -517,7 +517,7 @@ django_course\  <--This is the root directory
         >tests.py
         >views.py
     media\
-    mediafilew\
+    mediafiles\
     static\
         >main.css
     staticfiles\

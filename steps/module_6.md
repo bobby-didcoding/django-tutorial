@@ -34,7 +34,7 @@ django_course\  <--This is the root directory
     static\ 
     staticfiles\
     steps\
-    users\  <--New directory
+    users\
         __pycache__\
         migrations\
             __pycache__\

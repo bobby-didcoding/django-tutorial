@@ -30,6 +30,8 @@ django_course\  <--This is the root directory
         >settings.py
         >urls.py
         >wsgi.py
+    media\
+        ...
     steps\
         ...
     venv\
@@ -120,12 +122,12 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 ```
 
-4) Static and Media - We now need to add new directories to our project to handle static and media files. We will talk more about these later in the course. Add a static and media directory to your root directory to look like this.
+4) Static and Media - We now need to add a new directory to our project to handle static files. We will talk more about these later in the course. Add a static directory to your root directory to look like this.
+>Note: You already have a media directory with some default images.
 
 ```
 django_course\  
     ...
-    media\ <--New directory
     static\ <--New directory
     ...
 ```
@@ -207,9 +209,8 @@ django_course\  <--This is the root directory
         >settings.py
         >urls.py
         >wsgi.py
-    media\ <--New directory
-    static\ <--New directory
-    staticfiles\ <--New directory
+    static\
+    staticfiles\
     steps\
     venv\
     >.gitignore
