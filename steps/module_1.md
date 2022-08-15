@@ -16,7 +16,7 @@ django_course\  <--This is the root directory
 ```
 If in doubt, run the following git commands:
 ```
-git checkout -b module_1
+git checkout module_1
 git pull origin module_1
 ```
 
